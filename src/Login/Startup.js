@@ -15,7 +15,7 @@ const networkErrorObj = {
   status: 503
 }
 
-export async function trySignup(username, password) {
+export async function trySignup(username, name, password) {
   console.log('Making signup query');
   let requestOptions = {
     "method": "POST",
@@ -25,9 +25,9 @@ export async function trySignup(username, password) {
   };
 
   let body = {
-    "provider":"username",
     "data": {
       "username": username,
+      "name": name,
       "password": password
     }
   };
@@ -46,7 +46,7 @@ export async function trySignup(username, password) {
   }
 }
 
-export async function tryLogin(username, password) {
+export async function tryLogin(username, name, password) {
   console.log('Making login query');
   let requestOptions = {
     "method": "POST",
@@ -56,9 +56,9 @@ export async function tryLogin(username, password) {
   };
 
   let body = {
-    "provider":"username",
     "data": {
       "username": username,
+	  "name": name,
       "password": password
     }
   };

@@ -10,6 +10,7 @@ export default class Signup extends React.Component {
     super(props);
     this.state = {
 	  	isLoggedIn : false,
+		nameTextBox: '',
 	  	usernameTextBox : '',
 	  	passwordTextBox : '',
       	fontsAreLoaded: false,
@@ -25,7 +26,7 @@ export default class Signup extends React.Component {
   }
 
   handleLoginPressed = async () => {
-    let resp = await tryLogin(this.state.usernameTextBox, this.state.passwordTextBox);
+    let resp = await tryLogin(this.state.usernameTextBox, this.state.nameTextBox, this.state.passwordTextBox);
     if(resp.status !== 200){
       if (resp.status === 504) {
         Alert.alert("Network Error", "Check your internet connection" )
@@ -38,7 +39,7 @@ export default class Signup extends React.Component {
   }
 
   handleSignupPressed = async () => {
-    let resp = await trySignup(this.state.usernameTextBox, this.state.passwordTextBox);
+    let resp = await trySignup(this.state.usernameTextBox, this.state.nameTextBox, this.state.passwordTextBox);
     if(resp.status !== 200){
       if (resp.status === 504) {
         Alert.alert("Network Error", "Check your internet connection" )
@@ -54,6 +55,13 @@ export default class Signup extends React.Component {
   	this.setState({
   		...this.state,
   		usernameTextBox: usernameTextBox
+  	})
+  }
+  
+  handleNameChange = nameTextBox => {
+  	this.setState({
+  		...this.state,
+  		nameTextBox: nameTextBox
   	})
   }
 
@@ -90,6 +98,10 @@ export default class Signup extends React.Component {
           </Header>
           <Content contentContainerStyle={{justifyContent:'center', margin: 20}}>
             <Form>
+			  <Item floatingLabel>
+                <Label>Name</Label>
+                <Input value={this.state.nameTextBox} onChangeText={this.handleNameChange}/>
+              </Item>
               <Item floatingLabel>
                 <Label>Username</Label>
                 <Input value={this.state.usernameTextBox} onChangeText={this.handleUsernameChange}/>

@@ -11,7 +11,7 @@ export default class HomeScreen extends React.Component {
 	    <Header hasTabs style={{backgroundColor: "red"}}>
 		  <Left>
 		    <Button transparent
-			  onPress={() => this.props.navigation.navigate("DrawerOpen")}>
+			  onPress={() => this.props.navigation.navigate("SideBar")}>
 			  <Icon name="list" />
 			</Button>
 		  </Left>

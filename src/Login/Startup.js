@@ -5,9 +5,11 @@ import MaterialCommunityIcon from "react-native-vector-icons/MaterialCommunityIc
 
 const clusterName = "butane33"
 
-const dataUrl = "https://data." + clusterName + ".hasura-app.io/v1/query";
-const loginUrl = "https://auth." + clusterName + ".hasura-app.io/v1/login";
-const signupUrl = "https://auth." + clusterName + ".hasura-app.io/v1/signup";
+const dataUrl = "https://data." + clusterName + ".hasura-app.io/query";
+const loginUrl = "https://app." + clusterName + ".hasura-app.io/login/";
+const signupUrl = "https://app." + clusterName + ".hasura-app.io/signup/";
+
+import { Alert } from 'react-native';
 
 const networkErrorObj = {
   status: 503
@@ -76,14 +78,6 @@ export async function tryLogin(username, password) {
   }
 }
 
-export async function getArticle(id) {
-      if ({isLoggedIn:true}) {
-        return Home
-      } else {
-        Alert.alert("Not working")      
-      }
-  }
-
 export default class Startup extends React.Component {
   render() {
 	return (
@@ -125,4 +119,3 @@ export default class Startup extends React.Component {
 	)
   }
 }
-	  

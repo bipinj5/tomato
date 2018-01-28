@@ -1,51 +1,109 @@
 import React from "react";
 import { Statusbar, View, StyleSheet } from 'react-native';
-import { Container, Header, Title, Left, Icon, Right, Button, Body, Text, Thumbnail, Tab, Tabs, TabHeading, ScrollableTab } from 'native-base';
-import Tab1 from './tab/tabOne';
+import { Container, Header, Title, Left, Icon, Right, Button, Body, Text, Card, Form, Item, Input } from 'native-base';
+import { trySearch } from '../Login/Startup';
+import HomeScreenBodyData from './HomeScreenBodyData.js';
 import MaterialCommunityIcon from "react-native-vector-icons/MaterialCommunityIcons";
 import FeatherIcon from "react-native-vector-icons/Feather";
+
 export default class HomeScreen extends React.Component {
+  
+  constructor(props){
+    super(props);
+    this.state = {
+		data: [],
+	  	isLoggedIn : false,
+	  	searchTextBox : '',
+      	fontsAreLoaded: false,
+	  }
+  }	
+  
+  handleSearchPressed = async () => {
+    let resp = await trySearch(this.state.searchTextBox);
+    if(resp.status !== 200){
+      if (resp.status === 504) {
+        Alert.alert("Network Error", "Check your internet connection" )
+      } else {
+        Alert.alert("Error", "Unauthorized, Invalid username or password")      
+      }
+    } else {
+      this.setState({isLoggedIn:true})  
+    }
+  }
+  
+  handleSearchChange = searchTextBox => {
+  	this.setState({
+  		...this.state,
+  		searchTextBox: searchTextBox
+  	})
+  }
+	
+  getData(){
+	async function trySearch(search) {
+	  console.log('Making search query');
+      let requestOptions = {
+        "method": "POST",
+        "headers": {
+          "Content-Type":"application/json"
+        }
+      };
+
+      let body = {
+        "searchInput": search
+      };
+
+      requestOptions["body"] = JSON.stringify(body);
+      console.log("Auth Response ---------------------");
+  
+      try {
+        let resp = await fetch(searchUrl, requestOptions)
+		.then((resp) => resp.json())
+		.then((respJson) => {
+	     this.setState({data: respJson.restaurantList})
+		})
+        console.log(resp);
+      }
+      catch(e) {
+        console.log("Request Failed: " + e);
+        return networkErrorObj;
+      }
+    }
+  }
+	
+  componentDidMount() {
+    this.getData();
+  }
+	
   render() {
     return (
-      <Container style={{paddingTop: 20}}>
-	    <Header hasTabs style={{backgroundColor: "red"}}>
+	  <Container>
+	    <Header style={{backgroundColor: "red"}}>
 		  <Left>
 		    <Button transparent
-			  onPress={() => this.props.navigation.navigate("SideBar")}>
+			  onPress={() => this.props.navigation.navigate("DrawerOpen")}>
 			  <Icon name="list" />
 			</Button>
 		  </Left>
-		  <Text>SELECTED LOCATION</Text>
-		  <Right>
-		    <Button transparent>
-			  <Icon name="search" />
-			</Button>
-	      </Right>
+		    <Text>SELECTED LOCATION</Text>
+		  <Right />
 		</Header>
-        <Tabs renderTabBar={()=> <ScrollableTab />}>
-          <Tab heading={<TabHeading style={{backgroundColor: "white"}}><Icon name="pizza" /><Text style={{fontSize: 14, color: "green"}}>Delivery</Text></TabHeading>}>
-			<Tab1 />
-		  </Tab>
-		  <Tab heading={<TabHeading style={{backgroundColor: "white"}}><Icon name="beer" /><Text style={{color: "green"}}>Cafes & More</Text></TabHeading>}>
-	        <Tab1 />
-		  </Tab>
-		  <Tab heading={<TabHeading style={{backgroundColor: "white"}}><Icon name="beer" /><Text style={{color: "green"}}>Desserts & Bakes</Text></TabHeading>}>
-	        <Tab1 />
-		  </Tab>
-		  <Tab heading={<TabHeading style={{backgroundColor: "white"}}><Icon name="moon" /><Text style={{color: "green"}}>Dining Out</Text></TabHeading>}>
-		    <Tab1 />
-		  </Tab>
-		  <Tab heading={<TabHeading style={{backgroundColor: "white"}}><Icon name="beer" /><Text style={{color: "green"}}>Drinks & Nightlife</Text></TabHeading>}>
-	        <Tab1 />
-		  </Tab>
-		  <Tab heading={<TabHeading style={{backgroundColor: "white"}}><Icon name="beer" /><Text style={{color: "green"}}>Collection</Text></TabHeading>}>
-	        <Tab1 />
-		  </Tab>
-		</Tabs>
-      </Container>
+		<Card>
+          <Form>
+		    <Item>
+		      <Input value={this.state.searchTextbox} onChangeText={this.handleSearchChange} placeholder="Search Here" />
+			  <Button transparent onPress={this.handleSearchPressed}>
+			    <Icon name="ios-search" />
+			  </Button>
+		    </Item>
+		  </Form>
+		</Card>
+        <HomeScreenBodyData data = {this.state.data}/>
+	  </Container>
     );
   }
 }
+
+module.export = HomeScreen;
 
 const styles = StyleSheet.create({
   butt: {

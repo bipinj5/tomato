@@ -10,9 +10,9 @@ export default class Signup extends React.Component {
     super(props);
     this.state = {
 	  	isLoggedIn : false,
-		nameTextBox: '',
-	  	usernameTextBox : '',
-	  	passwordTextBox : '',
+		nameTextBox: 'Bipin',
+	  	usernameTextBox : 'Trying2',
+	  	passwordTextBox : '123456789',
       	fontsAreLoaded: false,
 	  }
   }
@@ -78,7 +78,7 @@ export default class Signup extends React.Component {
       isLoggedIn: false
     })
   }
-
+  
   render() {
 	  if (this.state.fontsAreLoaded == true) {
       if(this.state.isLoggedIn === true){

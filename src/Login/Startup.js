@@ -25,11 +25,9 @@ export async function trySignup(username, name, password) {
   };
 
   let body = {
-    "data": {
-      "username": username,
-      "name": name,
-      "password": password
-    }
+    "username": username,
+    "name": name,
+    "password": password
   };
 
   requestOptions["body"] = JSON.stringify(body);
@@ -56,11 +54,9 @@ export async function tryLogin(username, name, password) {
   };
 
   let body = {
-    "data": {
-      "username": username,
-	  "name": name,
-      "password": password
-    }
+    "username": username,
+	"name": name,
+    "password": password
   };
 
   requestOptions["body"] = JSON.stringify(body);

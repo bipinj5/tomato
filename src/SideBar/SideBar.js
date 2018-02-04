@@ -40,6 +40,11 @@ export default class SideBar extends React.Component {
               <IonIcon name="md-restaurant" style={{ paddingLeft: 14, fontSize: 30, color: "green" }} />
               <Text style={{ paddingLeft: 14}}>Add restaurant</Text>
             </ListItem>
+			<ListItem noBorder
+			  onPress={() => this.props.navigation.navigate("Search")}>
+              <IonIcon name="md-restaurant" style={{ paddingLeft: 14, fontSize: 30, color: "green" }} />
+              <Text style={{ paddingLeft: 14}}>search</Text>
+            </ListItem>
 			<ListItem noTopBorder>
 			  <OctiIcon name="sign-out" style={{ paddingLeft: 14, fontSize: 30 }} />
               <Text style={{ paddingLeft: 10 }}>Sign out</Text>

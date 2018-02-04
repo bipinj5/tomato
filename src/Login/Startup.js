@@ -5,7 +5,6 @@ import MaterialCommunityIcon from "react-native-vector-icons/MaterialCommunityIc
 
 const clusterName = "butane33"
 
-const dataUrl = "https://data." + clusterName + ".hasura-app.io/query";
 const loginUrl = "https://app." + clusterName + ".hasura-app.io/login/";
 const signupUrl = "https://app." + clusterName + ".hasura-app.io/signup/";
 const searchUrl = "https://app." + clusterName + ".hasura-app.io/search/";

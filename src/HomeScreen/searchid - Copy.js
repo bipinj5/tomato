@@ -1,7 +1,7 @@
 import React from "react";
-import { Statusbar, Alert, View, Image, StyleSheet, ActivityIndicator, ListView, ScrollView } from 'react-native';
+import { Statusbar, Alert, View, Image, StyleSheet, ActivityIndicator, ListView } from 'react-native';
 import { Container, Header, Title, Left, Icon, Right, Button, Body, Text, Card, CardItem,
- Form, Item, Input, Badge } from 'native-base';
+ Form, Item, Input } from 'native-base';
 import { trySearch } from '../Login/Startup';
 import MaterialCommunityIcon from "react-native-vector-icons/MaterialCommunityIcons";
 import FeatherIcon from "react-native-vector-icons/Feather";
@@ -90,43 +90,25 @@ componentDidMount() {
         dataSource={this.state.dataSource}
         renderSeparator= {this.ListViewItemSeparator}
         renderRow={(rowData) =>
-	    <View style={{flex:1, flexDirection: 'column'}}>
-		  <Card style={{justifyContent: 'center',alignItems: 'center',}}>
-		    <CardItem style={{flex:1, flexDirection: 'column'}}>{rowData.restaurant_details.map(r => <Image source={{ uri: r.restaurant_image_url }} style={{width:350, height:350}} /> )}</CardItem>
-		    <Body>
-			  <CardItem>{rowData.restaurant_details.map(r => <Text>Name: {r.restaurant_name}</Text> )}</CardItem>
-		      <CardItem>{rowData.restaurant_details.map(r => <Text style={{fontSize:12,color: "grey"}}>{r.state}, {r.country}</Text> )}</CardItem>
-		    </Body>
-		  </Card>
-		  <Text>Menu:</Text>
-		  <ScrollView horizontal>{rowData.menu.map(r => <Image source={{ uri: r.menu_url }} style={{width:400, height:350}} /> )}</ScrollView> 
-		  <Text>Photos:</Text>
-		  <ScrollView horizontal>{rowData.restaurant_view.map(r => <Image source={{ uri: r.view_image_url }} style={{width:250, height:250}} /> )}</ScrollView>
-		  <Card>
-		    <CardItem>
-		      <Text note>Cuisines</Text>
-			</CardItem>
-		    <CardItem>{rowData.cuisine.map(r => <Text>⬤{r.cuisine_name} </Text> )}</CardItem> 
-		  </Card>
-		  <Card>
-		    <CardItem>
-			  <Text style={{fontWeight: 'bold'}}>Address</Text>
-			</CardItem>
-			<CardItem>
-			  <Text>{rowData.restaurant_details.map(r => <Text>{r.address}</Text> )}</Text>
-			</CardItem>
-		  </Card>
-	      <Card>
-		    <Header style={{flex: 1, flexDirection: 'row'}}>
-			  <Badge success>
-                <Text>{rowData.reviews.map(r => <Text>{r.rating_stars}</Text> )}</Text>
-              </Badge>
-		      <Text>Rating</Text>
-			</Header>
-			<Text note>WHAT PEOPLE SAY?</Text>
-			<CardItem style={{flex:1, flexDirection: 'column'}}>{rowData.reviews.map(r => <Text>{r.created}:,{r.review_text}</Text> )}</CardItem>
-		  </Card>
-        </View>
+	    <Card style={{flex:1, flexDirection: 'column'}}>
+		  <Text>{rowData.cuisine.cuisine_name}</Text>
+		  <Text note>{rowData.cuisine.restaurant_id}</Text>
+		  <Text>{rowData.menu_count}</Text>
+		  <Image source = {{ uri: rowData.menu.menu_url }} style={{width: 300, height: 350
+	      }} />
+		  <Text>{rowData.restaurant_details.address}</Text>
+		  <Text note>{rowData.restaurant_details.country}</Text>
+		  <Text>{rowData.restaurant_details.pincode}</Text>
+		  <Text note>{rowData.restaurant_details.restaurant_name}</Text>
+		  <Text>{rowData.restaurant_details.state}</Text>
+		  <Image source = {{ uri: rowData.restaurant_view.view_image_url }} style={{width: 100, height: 100
+	      }} />
+		  <Text>{rowData.restaurant_view_count}</Text>
+		  <Text note>{rowData.reviews.created}</Text>
+		  <Text>{rowData.reviews.rating_stars}</Text>
+		  <Text note>{rowData.reviews.review_text}</Text>
+		  <Text>{rowData.reviews.user_id}</Text>
+        </Card>
           }
       />
 	</View>

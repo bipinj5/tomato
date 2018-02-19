@@ -90,6 +90,7 @@ componentDidMount() {
 	
   return (
       <Container>
+        <View style={{paddingTop: 20}}>
 		  <Card>
 		    <Form>
 		      <Item>
@@ -100,6 +101,7 @@ componentDidMount() {
 		      </Item>
 		    </Form>
 		  </Card>
+	    </View>
         <ListView
           dataSource={this.state.dataSource}
           renderSeparator= {this.ListViewItemSeparator}

@@ -10,9 +10,9 @@ export default class Signup extends React.Component {
     super(props);
     this.state = {
 	  	isLoggedIn : false,
-		nameTextBox: 'Bipin',
-	  	usernameTextBox : 'Trying2',
-	  	passwordTextBox : '123456789',
+		nameTextBox: '',
+	  	usernameTextBox : '',
+	  	passwordTextBox : '',
       	fontsAreLoaded: false,
 	  }
   }

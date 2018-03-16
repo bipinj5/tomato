@@ -105,38 +105,19 @@ export default class Startup extends React.Component {
   render() {
 	return (
 	  <Container>
-	    <Header style={{backgroundColor: "white"}} />
-	    <Content>
+	    <Content style={{paddingTop:60}}>
+		  <Image 
+		    style={{alignSelf: "center", width: 300, height: 320}} 
+			source={require('./tomato.png')} 
+		  />
 		  <View style={{flex: 1, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
-		    <Left>
-		    <Card style={{marginLeft: 14}}>
-            <Button light style={{ alignSelf: "flex-start", width: 150, paddingLeft: 20, backgroundColor: "white"}}
+		    <Card>
+            <Button light block style={{backgroundColor: "white"}}
 			  onPress={() => this.props.navigation.navigate("Signup")}>
-		      <Text style={{textAlign: "center"}}>Sign up</Text>
+		      <Text style={{textAlign: "center"}}>Login & Sign up</Text>
 		    </Button>
 		    </Card>
-		    </Left>
-		    <Right>
-		    <Card style={{marginRight: 14}}>
-		    <Button light style={{ alignSelf: "flex-end", width: 150, paddingLeft: 20, backgroundColor: "white"}}
-			  onPress={() => this.props.navigation.navigate("Login")}>
-		      <Text style={{textAlign: "center"}}>Log in</Text>
-		    </Button>
-		    </Card>	
-            </Right>	
-          </View>	
-          <Card style={{marginLeft: 14, marginRight: 14}}>		  
-		    <Button block>
-			  <MaterialCommunityIcon style={{color: "white", fontSize: 30}} name="facebook-box" />
-		      <Text>Login with Facebook</Text>
-		    </Button>
-		  </Card>
-		  <Card style={{marginLeft: 14, marginRight: 14}}>
-		    <Button block primary style={{backgroundColor: "white"}}>
-			  <Thumbnail small source={require('./gsign.png')} style={{height: 30, width: 30}} />
-		      <Text note>Continue with Google</Text>
-		    </Button>
-		  </Card>
+		  </View>
 		</Content>
 	  </Container>
 	)

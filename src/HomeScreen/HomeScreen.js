@@ -2,7 +2,6 @@ import React from "react";
 import { Statusbar, Alert, View, Image, StyleSheet, ActivityIndicator, ListView } from 'react-native';
 import { Container, Header, Title, Left, Icon, Right, Button, Body, Text, Card, CardItem,
  Form, Item, Input } from 'native-base';
-import { trySearch } from '../Login/Startup';
 import Search from './searchid.js';
 import MaterialCommunityIcon from "react-native-vector-icons/MaterialCommunityIcons";
 import FeatherIcon from "react-native-vector-icons/Feather";
@@ -14,24 +13,51 @@ export default class HomeScreen extends React.Component {
     this.state = {
 		data: [],
 	  	searchTextBox : '',
-		isLoading: true
-	  }
+		isSearchPressed: false,
+		isLoading: true,
+		
+	};
+
+    this.trySearch = this.trySearch.bind(this);
+	
   }	
   
-GetItem(restaurant_name) {
-  Alert.alert(restaurant_name);
-}
-  
-  handleSearchPressed = async () => {
-    let resp = await trySearch(this.state.searchTextBox);
-    if(resp.status !== 200){
-      if (resp.status === 504) {
-        Alert.alert("Network Error", "Check your internet connection" )
-      } else {
-        Alert.alert("Error", "Unauthorized, Invalid username or password")      
+  trySearch(search) {
+    console.log('Making search query');
+    let requestOptions = {
+      "method": "POST",
+      "headers": {
+         "Content-Type":"application/json"
       }
-    } else {
-      this.setState({isLoggedIn:true})  
+    };
+
+    let body = {
+      "searchInput": "Kalyan"
+    };
+
+    requestOptions["body"] = JSON.stringify(body);
+    console.log("Auth Response ---------------------");
+  
+    try {
+      let response = fetch('https://app.butane33.hasura-app.io/search/', requestOptions)
+	    .then((response) => response.json())
+        .then((responseJson) => {
+          let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+          this.setState({
+            isLoading: false,
+            dataSource: ds.cloneWithRows(responseJson.restaurantList),
+          }, function() {
+           // do something with new state
+          });
+        })
+	    .catch((error) => {
+          console.error(error);
+        });
+        console.log(response);
+        return response; 
+    }
+    catch(e) {
+      console.log("Request Failed: " + e);
     }
   }
   
@@ -53,32 +79,11 @@ GetItem(restaurant_name) {
      />
    );
  }
-
-componentDidMount() {
-  fetch('https://app.butane33.hasura-app.io/search/', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-	  "searchInput": "Kalyan"
-	  })
-  })
-   .then((response) => response.json())
-   .then((responseJson) => {
-     let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-     this.setState({
-        isLoading: false,
-        dataSource: ds.cloneWithRows(responseJson.restaurantList),
-     }, function() {
-          // do something with new state
-     });
-    })
-    .catch((error) => {
-      console.error(error);
-    });
-} 
-  
+ 
+    async componentDidMount() {
+	   await this.trySearch();
+    }
+ 
   render() {
     if (this.state.isLoading) {
       return (
@@ -89,8 +94,7 @@ componentDidMount() {
     }
 	
   return (
-      <Container>
-		  <Card>
+        <Container>
 		    <Form>
 		      <Item>
 		        <Input value={this.state.searchTextbox} onChangeText={this.handleSearchChange} placeholder="Search Here" />
@@ -99,22 +103,17 @@ componentDidMount() {
 			    </Button>
 		      </Item>
 		    </Form>
-		  </Card>
         <ListView
           dataSource={this.state.dataSource}
           renderSeparator= {this.ListViewItemSeparator}
           renderRow={(rowData) =>
-          <Card style={{flex:1, flexDirection: 'column'}}>
+          <Card style={{flex:1, flexDirection: 'row'}}>
 		    <CardItem body>
-              <Image source = {{ uri: rowData.restaurant_image_url }} style={{width: 200, height: 200}} />
-			</CardItem>
-			<CardItem>
-              <Text bold>{rowData.restaurant_id}</Text>
+              <Image source = {{ uri: rowData.restaurant_image_url }} style={{width: 100, height: 100}} />
 			</CardItem>
 			<CardItem>
 			  <Text note>{rowData.restaurant_name}</Text>
 			</CardItem>
-			  <Text note>State: {rowData.state}</Text>
           </Card>
           }
         />
